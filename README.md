@@ -7,6 +7,8 @@ This package has two separate demo modes using the same phone interface:
 
 State is in memory and resets when the server or board restarts. The screen on the webpage is a preview; there is no physical text display yet. Selecting a status does not automatically stop a running timer. Timer completion sets status to Free. The board has no external demo buttons yet; BOOT/RST retain their programming/reset roles.
 
+Use **+ Add status** beside the three default desk settings to create and select your own status, such as “Out for lunch.” You can add up to 12 custom statuses with unique names of 1–32 characters. Use the **×** beside a custom status to delete it; deleting the selected status switches the desk to Free. The three defaults cannot be deleted. Custom statuses sync across browsers connected to the same simulator or board and reset when it restarts. Custom statuses use a purple preview accent and a purple RGB LED in board mode.
+
 ## Get the project
 
 Download this repository on a **laptop**, using GitHub's **Code > Download ZIP**, then extract it. Alternatively:
@@ -80,7 +82,7 @@ This is a local classroom demo. Anyone with the demo Wi-Fi password can control 
 - `npm start`: simulator on port 8080. Set `PORT` in the shell to override it.
 - `firmware/SmartDeskDemo/web_page.h`: generated self-contained interface with no internet font/CDN dependencies.
 
-The simulator and board expose GET `/api/state` and POST `/api/action` with URL-encoded form bodies. Actions: status(value=free/meeting/focus), message(value=text), start(seconds=1..7200), pause, resume, reset. The page polls every 500 ms. The board owns its timer using millis(); the simulator uses its own clock. These modes do not synchronize with each other.
+The simulator and board expose GET `/api/state` and POST `/api/action` with URL-encoded form bodies. Actions: status(value=free/meeting/focus or a custom status ID), add-status(value=name), delete-status(value=custom status ID), message(value=text), start(seconds=1..7200), pause, resume, reset. State includes a `customStatuses` array of `{id,label}` objects. Adding a status selects it immediately. The page polls every 500 ms. The board owns its timer using millis(); the simulator uses its own clock. These modes do not synchronize with each other.
 
 The physical display and future external buttons can reuse this state. Keep the antenna end clear of metal and wiring in the future printed case. Hardware wiring, LED pin, firmware compilation/upload, and BLU phone operation still require verification on the teammate's equipment.
 
